@@ -111,6 +111,14 @@ def runGame(search, board, depthLimit):
             movesList.append(move)
             board.remove(move)
             metrics.agentScore = board.score
+    elif search == "depth limited minimizing":
+        while board.movesLeft():
+            gui.updateAgentBoard(board)
+            metrics.agentMoves += 1
+            move = games.minimizing_singleplayer_depthlimit(agent.GameAgent(board), board, depthLimit)
+            movesList.append(move)
+            board.remove(move)
+            metrics.agentScore = board.score
     elif search == "full alpha beta":
         while board.movesLeft():
             move = games.alphabeta_singleplayer(agent.GameAgent(board), board, depthLimit)
@@ -199,8 +207,11 @@ def agentVSPlayer():
         # while search != "breadth" and search != "depth" and search != "greedy" and search != "flounder":
         #     search = input("What search would you like? (breadth, depth, flounder, or greedy) ")
         # print("Now lets see how the agent did...")
-        search = "depth limited maximizing"
         depthLimit = gui.difficulty()
+        if depthLimit == 1:  # player chose easy difficulty
+            search = "depth limited minimizing"
+        else:
+            search = "depth limited maximizing"
         runGame(search, boardCopy, depthLimit)
         # displayMetrics(boardCopy)
         # print()

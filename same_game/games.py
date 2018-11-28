@@ -234,7 +234,7 @@ def maximizing_singleplayer_search(state, game):
             v = max(v, max_value(game.result(state, a)))
         return v
 
-    # Body of alphabeta_search:
+    # Body of maximizing search:
     best_score = -infinity
     beta = infinity
     best_action = None
@@ -275,6 +275,36 @@ def maximizing_score_depth_search(state, game, d=4, cutoff_test=None, eval_fn=No
     return best_action
 
 
+def minimizing_singleplayer_depth_search(state, game, d=4, cutoff_test=None, eval_fn=None):
+    """Search adopted from Alpha Beta search. Works for an agent trying to minimize their score in a single player game,
+    or a game where the agent is competing against an opponent, but plays on their own game board. Great for
+    'easy' level AI opponents."""
+
+    def min_value(state, depth):
+        if cutoff_test(state, depth):
+            return eval_fn(state)
+        v = infinity
+        for a in game.actions(state):
+            v = min(v, min_value(game.result(state, a), depth + 1))
+        return v
+
+    # Body of minimizing search starts here:
+    # The default test cuts off at depth d or at a terminal state
+    evL = lambda state, depth: depth > d
+    cutoff_test = (cutoff_test or
+                   # (lambda state, depth: depth > d or
+                   (evL or
+                    game.terminal_test(state)))
+    eval_fn = eval_fn or (lambda state: game.utility(state))
+    worst_score = infinity
+    worst_action = None
+    for a in game.actions(state):
+        v = min_value(game.result(state, a), 1)
+        if v <= worst_score:
+            worst_score = v
+            worst_action = a
+    return worst_action
+
 # ______________________________________________________________________________
 # Players for Games
 
@@ -312,6 +342,10 @@ def maximizing_singleplayer(game, state):
 
 def maximizing_singleplayer_depthlimit(game, state, depth):
     return maximizing_score_depth_search(state, game, depth)
+
+
+def minimizing_singleplayer_depthlimit(game, state, depth):
+    return minimizing_singleplayer_depth_search(state, game, depth)
 
 
 def play_game(game, *players):
