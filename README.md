@@ -1,6 +1,6 @@
 ## Same Game
 ###### by James Bertrand, James Brock, and Robert Coomber
-######v1.0
+###### v1.0
 
 Released 12-6-18
 
