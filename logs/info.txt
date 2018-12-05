@@ -1,0 +1,14 @@
+metrics.csv file records metrics from each time the game is played.
+
+Columns:
+Date
+Name
+Search type
+Board object reference
+Score
+Search Depth
+Nodes Expanded
+Time to solve (seconds)
+Number of board colors
+Board side length
+Search depth limit (if applicable)

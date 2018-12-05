@@ -1,4 +1,4 @@
-import utils
+from same_game import utils
 import random
 import numpy as np
 from same_game import searches

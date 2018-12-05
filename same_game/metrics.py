@@ -43,7 +43,7 @@ def getMetrics(reference):
     return allMetrics[str(reference)]
 
 def writeCSVFile():
-    with open('records.csv', 'a', newline="") as f:
+    with open('logs/metrics.csv', 'a', newline="") as f:
         writer = csv.writer(f)
         writer.writerows(allResults)
 
