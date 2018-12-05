@@ -1,5 +1,5 @@
+logs/metrics.csv
 .DS_Store
 .idea/
 venv/
 __pycache__/
-logs/metrics.csv
