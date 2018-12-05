@@ -1,9 +1,12 @@
 ## Same Game
 ###### by James Bertrand, James Brock, and Robert Coomber
+######v1.0
+
+Released 12-6-18
 
 ##### VM Library Requirements:
 * numpy
-* graphics.py ("graphics.py" only NOT "graphics")
+* graphics.py ("graphics.py" NOT "graphics")
 
 ##### Bonuses:
 - _____
