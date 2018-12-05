@@ -1,19 +1,6 @@
-Team Members:
-
-James Brock
-James Bertrand
-Robert Coomber
-
-
 VM Library Requirements:
 
 numpy
 utils
 grid
 graphics.py (make sure it is the graphics.py library not the graphics library)
-
-
-Current State of Project:
-
-The State class is defined in the game_state.py file, which records and can relay information about the state.
-Running the tests.py file will demonstrate the ability of the State class currently.
