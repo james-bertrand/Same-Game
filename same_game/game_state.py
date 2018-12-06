@@ -1,4 +1,4 @@
-import utils
+from same_game import utils
 import random
 import numpy as np
 from same_game import searches
@@ -161,7 +161,7 @@ class State:
                 l[int(self.data[row][col])] = l[int(self.data[row][col])] + 1
         return l
 
-    # returns the number that has the highest frequency (excluding 0)
+    # returns the number of the color that has the highest frequency (excluding 0)
     def highest(self):
         l = self.amounts()
         highest = 1
@@ -170,6 +170,7 @@ class State:
                 highest = i+2
         return highest
 
+    # returns the number of the color that has the lowest frequency (excluding 0)
     def lowest(self):
         l = self.amounts()
         lowest = 1
@@ -191,7 +192,3 @@ class State:
                 if self.data[x,y] != lowest and self.data[x,y] != 0 and l[int(self.data[x,y])] != 0:
                     self.data[x,y] = lowest
                     go = False
-
-
-
-

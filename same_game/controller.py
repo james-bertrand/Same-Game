@@ -6,7 +6,6 @@ from copy import deepcopy
 import time
 import datetime
 
-
 # pass in the reference (typically the board being searched on) and it will retrieve the metric data from that
 # specific board memory location
 # prints out all the data from the specified test
@@ -28,7 +27,8 @@ def displayMetrics(reference):
     print('Number of nodes explored:', nodes)
     print('Seconds taken:', time)
 
-
+# after metrics are ran, this will average all of the results together and print them based on a specific search
+# parameter: search - string representation of the search used
 def displayAvg(search):
     print(search.upper(), "AVERAGES:")
     results = metrics.allResults[search]
@@ -51,7 +51,6 @@ def displayAvg(search):
     print('Average depth of solution:', avgdepth)
     print('Average number of nodes explored:', avgnodes)
     print('Average seconds taken:', avgtime)
-
 
 # will run the search and store metrics based on the memory location of the board
 # parameters: search - a string that represents the search type ex: depth or breadth
@@ -90,11 +89,12 @@ def runSearch(search, board):
     metrics.agentScore = result.state.score
     print('Final board (', search, '):\n', result.state.data)
 
-
+# the active method that will use while loops to complete a board depending on the search inputted, as well as save
+# metrics as well
+# Parameters: search - string representation of the search,
+#             board - the board object to be manipulated,
+#             depth limit - int representing the depth limit of applicable searches
 def runGame(search, board, depthLimit):
-    # print()
-    # print(search.upper(), "============================ DEPTH LIMIT:", depthLimit)
-    # print('Starting board (', search, '):\n', board.data)
     ag = agent.GameAgent(board)
     movesList = []
     metrics.startTime(board.__repr__())
@@ -139,28 +139,13 @@ def runGame(search, board, depthLimit):
     metrics.agentMoveList = movesList
     gui.finalAgentBoard(board)
     gui.compare()
-    # print('Final board (', search, '):\n', board.data)
-    # print('\nMoves taken:')
-    # count = 1
-    # for move in movesList:
-    #     print(count, ')', move)
-    #     count += 1
-    # print('Score achieved:', board.score)
 
-
-# runs the block of code where the player searches the board
+# runs the block of code that loops through the player searching the board
 # parameters: board - the board for the player to search in
 def playerInput(board):
     while board.movesLeft():
         x = gui.updateBoard(board)
         metrics.playerMoves += 1
-        # print("Move", metrics.playerMoves)
-        # print(board.data)
-        # print('Current Score:', board.score)
-        # print("Choose a move #:")
-        # for i in range(len(board.moves())):
-        #     print(i, ")", board.moves()[i])
-        # x = int(input("Your move: "))
         board.remove(board.moves()[x])
         metrics.playerScore = board.score
     metrics.playerTime = metrics.getTime("player")
@@ -168,19 +153,10 @@ def playerInput(board):
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     metrics.saveResults(st, board.name, "player", board.__repr__(), metrics.playerScore, None, None, metrics.playerTime,
                         board.colors, board.size, 0)
-    # print("Final Board:")
-    # print(board.data)
-    # print("Final Score:", board.score)
     gui.finalBoard(board)
 
-
-# the mode where the player can play against a search algorithm of choice
+# runs the mode where the player can play against a search algorithm of choice
 def agentVSPlayer():
-    # print("Welcome to the Same Game!")
-    # print("The goal of this game is to remove as many color groupings of 2 or more tiles as possible.")
-    # print("The bigger the group you remove, the more points you score! Try to score as high as you can.")
-    # print()
-    # name = input("What is your name? ")
     while True:
         metrics.playerMoves = 1
         metrics.playerScore = 0
@@ -189,9 +165,7 @@ def agentVSPlayer():
         metrics.agentScore = 0
         gui.intro()
         name = gui.getName()
-        # size = int(input("What size board would you like to play on? (enter a single number. i.e. 5 = a 5x5 board) "))
         size = gui.getSize()
-        # colors = int(input("How many different colors would you like? (Recommended 2 or more) "))
         if size == 3 or size == 4:
             colors = 2
         if size == 5 or size == 6:
@@ -200,6 +174,7 @@ def agentVSPlayer():
         boardCopy = deepcopy(board)
         metrics.startTime("player")
         playerInput(board)
+<<<<<<< HEAD
 
         # print("You took", metrics.playerTime, "seconds!")
         # print()
@@ -207,26 +182,16 @@ def agentVSPlayer():
         # while search != "breadth" and search != "depth" and search != "greedy" and search != "flounder":
         #     search = input("What search would you like? (breadth, depth, flounder, or greedy) ")
         # print("Now lets see how the agent did...")
+=======
+        search = "depth limited maximizing"
+>>>>>>> upstream/master
         depthLimit = gui.difficulty()
         if depthLimit == 1:  # player chose easy difficulty
             search = "depth limited minimizing"
         else:
             search = "depth limited maximizing"
         runGame(search, boardCopy, depthLimit)
-        # displayMetrics(boardCopy)
-        # print()
-        # print("You scored:", metrics.playerScore)
-        # print("Agent scored:", metrics.agentScore)
-        # if metrics.playerScore > metrics.agentScore:
-        #     print("You win!")
-        # elif metrics.playerScore == metrics.agentScore:
-        #     print("You tied!")
-        # else:
-        #     print("You lost!")
         gui.results()
-        # if(input("Play again? (y/n) ") == 'n'):
-        #     break
-
 
 # runs search algorithms on a list of boards, reporting the metrics for each
 def agentOnlyMetrics(boards):
@@ -240,7 +205,6 @@ def agentOnlyMetrics(boards):
     # for s in metrics.searches:
     #     displayAvg(s)
 
-
 # runs alphabeta search on a list of boards
 def gameAgentOnly(boards, depthLimit):
     print('Agent test for a game search:')
@@ -251,92 +215,6 @@ def gameAgentOnly(boards, depthLimit):
             runGame(s, boardCopy, depthLimit)
             # displayMetrics(boardCopy)
 
-
+# will run the game if controller.py is run
 if __name__ == '__main__':
     agentVSPlayer()
-
-# # THIS IS OLD ONE THAT ISNT EFFICIENT
-# def agentOnlyMetrics(boards):
-#     print('Agent metrics on set of input same-game boards:')
-#     print('-----------------------------------------------')
-#     for board in boards:
-#         boardCopy = deepcopy(board)
-#         ag = agent.Agent(board)
-#         ag2 = agent.Agent(boardCopy)
-#
-#         print('Starting board:\n', board.data, '\n')
-#         metrics.startTime(board.__repr__())
-#         breadth_result = searches.breadth_first_tree_search(ag)
-#         metrics.getTime(board.__repr__())
-#         print('Final board (breadth first):\n', breadth_result.state.data, '\n')
-#         breadth_path = breadth_result.path()
-#         breadth_moves = []
-#         for node in breadth_path:
-#             if node.action:
-#                 breadth_moves.append(node.action)
-#         print('Moves:')
-#         count = 1
-#         for move in breadth_moves:
-#             print(count, ': ', move)
-#             count += 1
-#         print('\nTotal score:', breadth_result.state.score, '\n')
-#         print('Depth of solution:', breadth_result.depth, '\n')
-#         print('Number of nodes explored:', ag.nodesExplored, '\n')
-#
-#         print('Starting board:\n', boardCopy.data, '\n')
-#         metrics.startTime(boardCopy.__repr__())
-#         depth_result = searches.depth_first_tree_search(ag2)
-#         metrics.getTime(boardCopy.__repr__())
-#         print('Final board (depth first):\n', depth_result.state.data, '\n')
-#         depth_path = depth_result.path()
-#         depth_moves = []
-#         for node in depth_path:
-#             if node.action:
-#                 depth_moves.append(node.action)
-#         print('Moves:')
-#         count = 1
-#         for move in depth_moves:
-#             print(count, ': ', move)
-#             count += 1
-#         print('\nTotal score:', depth_result.state.score, '\n')
-#         print('Depth of solution:', depth_result.depth, '\n')
-#         print('Number of nodes explored:', ag2.nodesExplored, '\n')
-
-# THIS IS OLD ONE WITH THE WEIRD CHECK FOR COMPLETENESS
-# def agentOnlyMetrics(boards):
-#     print('Agent metrics on set of input same-game boards:')
-#     print('-----------------------------------------------')
-#     for board in boards:
-#         board2 = deepcopy(board) #makes a placeholder for when it is only adding values within, where it needs to restart from where it left off instead of letting the agent change the board
-#         go = True
-#         add = True #wether it knows to continue with the adding
-#         addLimit = board.size #how many times it will change tiles before generating an entirely new board
-#         aL = deepcopy(addLimit) #a placeholder to keep track of how many times it has added
-#         boardCount = 0
-#         while go:
-#             if not add: #this is to generate new random board every "addLimit" times
-#                 board.data = board.setup()
-#                 #print(board.data)
-#                 add = True
-#             else:
-#                 board.data = deepcopy(board2.data) #these next three lines are when it is fixing the placeholder so the agent doesnt modify what is being passed in
-#                 board.changeATile(1)
-#                 board2.data = deepcopy(board.data)
-#                 #print(board.data)
-#                 aL = aL-1
-#                 if aL == 0: #if the add counter hits 0, just restart and tell it to regenerate the board
-#                     add = False
-#                     aL = deepcopy(addLimit)
-#             pre = deepcopy(board.data)
-#             ag = agent.Agent(board)
-#             searches.depth_first_tree_search(ag)
-#             post = deepcopy(board.data)
-#             if board.isEmpty() == True:
-#                 go = False
-#                 print('Starting board:\n', pre, '\n')
-#                 print('Final board:\n', post, '\n')
-#             boardCount = boardCount + 1
-#
-#         print("Boards generated before correct: ", boardCount, '\n')
-#
-#

@@ -4,11 +4,15 @@ from same_game import metrics
 win = GraphWin("Same Game", 500, 500, autoflush=False)
 name = ''
 
+# will wait till there is a click within a square created by two points
 def waitTillClick(p1, p2):
     click = Point(501,501)
     while (click.getX() < p1.getX() or click.getX() > p2.getX()) and (click.getY() < p1.getY() or click.getY() > p2.getY()):
         click = win.getMouse()
 
+# will wait till a clikc is within a certain square and will then return which box it used
+# parameters: boxes - array of boxes (two points) that represent the different places to click
+# returns: the index of the box (two points) where the mouse was clicked
 def waitTillClickSections(boxes):
     click = win.getMouse()
     out = False
@@ -20,10 +24,12 @@ def waitTillClickSections(boxes):
             index += 1
         click = win.getMouse()
 
+# will wait till a click is placed anywhere
 def waitTillAnyClick():
     win.getMouse()
     return
 
+# begins the screen that asks for the name of the plyaer
 def getName():
     prompt = Text(Point(250, 220),
                 "Please enter your name:")
@@ -48,6 +54,7 @@ def getName():
     prompt.undraw()
     return name
 
+# starts the screen that requests the size of the board
 def getSize():
     prompt = Text(Point(250, 220),
                 "What size board would you like to play on?")
@@ -94,6 +101,8 @@ def getSize():
     elif index == 3:
         return 6
 
+# will draw out the board that is passed in
+# parameters: board - the board to be drawn out
 def updateBoard(board):
     s = board.size
     r = []
@@ -132,6 +141,10 @@ def updateBoard(board):
     score.undraw()
     return index
 
+# class to return the color of a square within a board based on its index
+# parameters: board - the board to be looked into
+#             index - the specific index of the move
+# returns: a string representation of the color
 def squareColor(board, index):
     x = board.data[int(index/board.size)][index%board.size]
     if x == 0:
@@ -145,6 +158,7 @@ def squareColor(board, index):
     elif x == 4:
         return "yellow"
 
+# updates the board every time a new agent move is made
 def updateAgentBoard(board):
     s = board.size
     r = []
@@ -177,6 +191,7 @@ def updateAgentBoard(board):
     score.undraw()
     prompt.undraw()
 
+# displays the results and scores of the player
 def finalBoard(board):
     s = board.size
     r = []
@@ -212,6 +227,7 @@ def finalBoard(board):
     prompt2.undraw()
     move.undraw()
 
+# displays the results and scores of the agent
 def finalAgentBoard(board):
     s = board.size
     r = []
@@ -248,6 +264,7 @@ def finalAgentBoard(board):
     prompt2.undraw()
     move.undraw()
 
+# begins the page that asks for the difficulty of the agent
 def difficulty():
     prompt = Text(Point(250, 220),
                   "Now it is time to see how the artificial intelligence scores...")
@@ -290,6 +307,7 @@ def difficulty():
     elif index == 2:
         return 3
 
+# the final screen that compares the scores of the player and agent
 def compare():
     if metrics.playerScore > metrics.agentScore:
         result = Text(Point(250, 200), "You beat the agent by " + str(metrics.playerScore) + ":" + str(metrics.agentScore) + "!")
@@ -316,6 +334,7 @@ def compare():
 def results():
     return 0
 
+# begins the first screen with the instructions of the game
 def intro():
     hello = Text(Point(250,200), "Welcome to the Same Game!")
     hello.setStyle("bold")
@@ -341,9 +360,9 @@ def intro():
     n.undraw()
     return
 
+# a test if the gui.py file is run
 if __name__ == '__main__':
     intro()
     getName()
     print(getSize())
     waitTillAnyClick()
-
