@@ -174,17 +174,7 @@ def agentVSPlayer():
         boardCopy = deepcopy(board)
         metrics.startTime("player")
         playerInput(board)
-<<<<<<< HEAD
-
-        # print("You took", metrics.playerTime, "seconds!")
-        # print()
-        # search = ""
-        # while search != "breadth" and search != "depth" and search != "greedy" and search != "flounder":
-        #     search = input("What search would you like? (breadth, depth, flounder, or greedy) ")
-        # print("Now lets see how the agent did...")
-=======
         search = "depth limited maximizing"
->>>>>>> upstream/master
         depthLimit = gui.difficulty()
         if depthLimit == 1:  # player chose easy difficulty
             search = "depth limited minimizing"
