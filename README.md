@@ -14,7 +14,7 @@ Released 12-6-18
 - **_Robust on many problem instances_** -> all boards are randomly generated, the agent successfully reaches its goal state on every iteration
 - **_Smarter than the casual user_** -> the hardest difficulty almost always won (some CS students were able to win after several attempts, not on the first try, however)
 
-##### Instructions:
+### Instructions:
 
 Clone this repository. Navigate to the **Same-Game** directory on your machine.
 
